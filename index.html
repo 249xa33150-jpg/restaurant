@@ -1,0 +1,808 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreetBites & Dine | Empowering Street Vendors & Restaurants</title>
+  <meta name="description" content="India's first unified food platform empowering local street food vendors and premier restaurants with 0% commission, live digital token queuing, and instant UPI payments." />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement-bar py-1">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-2 small fw-semibold">
+        <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-shield-check me-1"></i>0% Commission</span>
+        <span>Empowering 10,000+ local thelas, food carts & dine-in restaurants</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 small">
+        <a href="#schemes" class="text-decoration-none text-light opacity-90 hover-gold"><i class="bi bi-bank me-1"></i>PM SVANidhi Loan Guide</a>
+        <a href="#mandi" class="text-decoration-none text-light opacity-90 hover-gold"><i class="bi bi-graph-up me-1"></i>Mandi Price Tracker</a>
+        <span class="badge bg-danger rounded-pill px-2 py-1"><i class="bi bi-ticket-perforated me-1"></i>Live Token System</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top main-navbar shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <div class="brand-icon-box">
+          <i class="bi bi-fire text-warning fs-4"></i>
+        </div>
+        <div>
+          <span class="brand-name">StreetBites <span class="brand-accent">& Dine</span></span>
+          <span class="brand-subtitle d-block">Street Carts & Restaurants</span>
+        </div>
+      </a>
+
+      <!-- City Selector Dropdown -->
+      <div class="city-selector ms-lg-3 d-none d-md-flex align-items-center">
+        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+        <select id="citySelect" class="form-select form-select-sm border-0 bg-transparent fw-bold" onchange="filterByCity(this.value)">
+          <option value="all">ðŸ“ All Cities</option>
+          <option value="Delhi NCR" selected>Delhi NCR</option>
+          <option value="Bangalore">Bangalore</option>
+          <option value="Noida">Noida</option>
+          <option value="Gurugram">Gurugram</option>
+        </select>
+      </div>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+          <li class="nav-item">
+            <a class="nav-link active" href="#explore"><i class="bi bi-compass me-1"></i>Explore Food</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#tokenTrackModal"><i class="bi bi-ticket-detailed me-1"></i>Track Token</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#schemes"><i class="bi bi-award me-1"></i>Vendor Hub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#mandi"><i class="bi bi-basket me-1"></i>Mandi Rates</a>
+          </li>
+          
+          <!-- Vendor Portal Button -->
+          <li class="nav-item ms-lg-2">
+            <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#vendorPortalModal">
+              <i class="bi bi-shop me-1"></i>Vendor Dashboard / Register
+            </button>
+          </li>
+
+          <!-- Cart Button -->
+          <li class="nav-item">
+            <button class="btn btn-warning btn-sm rounded-pill px-3 fw-bold d-flex align-items-center gap-2 position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+              <i class="bi bi-bag-check-fill fs-6"></i>
+              <span>Cart</span>
+              <span class="badge bg-danger rounded-pill" id="cartCountBadge">0</span>
+            </button>
+          </li>
+
+          <!-- Dark/Light Mode Toggle -->
+          <li class="nav-item ms-lg-1">
+            <button class="btn btn-sm btn-light border rounded-circle theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+              <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-7">
+          <div class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3 shadow-sm">
+            <i class="bi bi-stars me-1"></i> Support Local Vendors â€¢ Zero Platform Cut
+          </div>
+          <h1 class="display-4 fw-extrabold hero-title mb-3">
+            Savor Iconic <span class="gradient-text">Street Food & Fine Dining</span> Near You.
+          </h1>
+          <p class="lead hero-lead mb-4">
+            From mouthwatering <strong>Pani Puri, Kathi Rolls & Crispy Dosas</strong> at beloved local thelas to luxurious <strong>Dum Biryani & Wood-fired Pizzas</strong> at top restaurants. Order ahead with digital tokens & pay directly via UPI!
+          </p>
+
+          <!-- Search & Filter Bar -->
+          <div class="hero-search-card p-2 p-md-3 rounded-4 shadow-lg mb-3">
+            <div class="row g-2 align-items-center">
+              <div class="col-md-8">
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-0 fs-5 text-warning"><i class="bi bi-search"></i></span>
+                  <input type="text" id="searchInput" class="form-control border-0 bg-transparent fs-6" placeholder="Search chaat, momos, rolls, biryani, or landmark..." onkeyup="handleSearch(this.value)">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-warning w-100 py-2 rounded-3 fw-bold shadow-sm" onclick="triggerSearch()">
+                  <i class="bi bi-search me-1"></i> Find Food
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Badges -->
+          <div class="d-flex flex-wrap gap-2 text-muted small mt-2">
+            <span class="feature-tag"><i class="bi bi-check-circle-fill text-success me-1"></i>0% Commission for Thelas</span>
+            <span class="feature-tag"><i class="bi bi-check-circle-fill text-success me-1"></i>Digital Token (Skip Queue)</span>
+            <span class="feature-tag"><i class="bi bi-check-circle-fill text-success me-1"></i>Direct UPI QR Pay</span>
+            <span class="feature-tag"><i class="bi bi-check-circle-fill text-success me-1"></i>FSSAI Hygiene Verified</span>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="hero-visual-card position-relative">
+            <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=700&q=80" alt="Authentic Street Food" class="img-fluid rounded-4 shadow-lg hero-img">
+            <div class="floating-badge top-badge shadow">
+              <div class="d-flex align-items-center gap-2">
+                <span class="pulse-dot"></span>
+                <div>
+                  <strong class="d-block small text-dark">Live Stall Active</strong>
+                  <span class="text-muted smaller">Now Serving Token #TK-18</span>
+                </div>
+              </div>
+            </div>
+            <div class="floating-badge bottom-badge shadow">
+              <div class="d-flex align-items-center gap-2">
+                <span class="fs-4">ðŸ›¡ï¸</span>
+                <div>
+                  <strong class="d-block small text-dark">FSSAI Certified</strong>
+                  <span class="text-muted smaller">100% Hygienic Ingredients</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Vendor Discovery & Tabs -->
+  <section class="py-5" id="explore">
+    <div class="container">
+
+      <!-- Section Title -->
+      <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+        <div>
+          <span class="text-warning fw-bold text-uppercase tracking-wider small">Explore & Order</span>
+          <h2 class="fw-bold mb-1">Discover Local Food Gems</h2>
+          <p class="text-muted mb-0">Browse real-time status, rush levels, digital token queues, and authentic menus.</p>
+        </div>
+
+        <!-- Vendor Type Tabs -->
+        <div class="nav nav-pills vendor-type-pills gap-1 p-1 bg-light rounded-pill border">
+          <button class="nav-link active rounded-pill px-3 py-1 fw-bold" onclick="filterVendorType('all')">
+            ðŸŒŸ All Spots
+          </button>
+          <button class="nav-link rounded-pill px-3 py-1 fw-bold" onclick="filterVendorType('street_vendor')">
+            ðŸ›’ Street Stalls & Thelas
+          </button>
+          <button class="nav-link rounded-pill px-3 py-1 fw-bold" onclick="filterVendorType('food_truck')">
+            ðŸšš Food Trucks & Carts
+          </button>
+          <button class="nav-link rounded-pill px-3 py-1 fw-bold" onclick="filterVendorType('restaurant')">
+            ðŸ½ï¸ Restaurants & Cafes
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Filters Bar -->
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 p-3 bg-white rounded-4 border mb-4 shadow-sm filter-bar">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <span class="fw-bold text-muted small me-1"><i class="bi bi-funnel me-1"></i>Filter:</span>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill active-filter" onclick="filterCategory('all', this)">All</button>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="filterCategory('Chaat', this)">Chaat & Pani Puri</button>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="filterCategory('North Indian', this)">Chole Bhature & Snacks</button>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="filterCategory('Rolls', this)">Kathi Rolls & Wraps</button>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="filterCategory('South Indian', this)">Dosas & Podi</button>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="filterCategory('Momos', this)">Momos & Thukpa</button>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="filterCategory('Biryani', this)">Dum Biryani</button>
+          <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="filterCategory('Italian', this)">Pizza & Pasta</button>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="form-check form-switch mb-0">
+            <input class="form-check-input" type="checkbox" id="vegOnlySwitch" onchange="toggleVegOnly(this.checked)">
+            <label class="form-check-label small fw-bold" for="vegOnlySwitch">ðŸŸ¢ Veg Only</label>
+          </div>
+          <div class="form-check form-switch mb-0 ms-2">
+            <input class="form-check-input" type="checkbox" id="openOnlySwitch" onchange="toggleOpenOnly(this.checked)">
+            <label class="form-check-label small fw-bold" for="openOnlySwitch">Open Now</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vendors Grid Container -->
+      <div class="row g-4" id="vendorsContainer">
+        <!-- Injected via JavaScript -->
+        <div class="col-12 text-center py-5">
+          <div class="spinner-border text-warning" role="status"></div>
+          <p class="text-muted mt-2">Loading neighborhood street stalls and restaurants...</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Special Banner: Why Street Vendors Love StreetBites -->
+  <section class="py-5 bg-warning-subtle border-top border-bottom">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-6">
+          <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2">Vendors First Policy</span>
+          <h2 class="fw-extrabold mb-3">Empowering Local Vendors With Technology That Cares</h2>
+          <p class="text-muted mb-4">
+            Big food delivery aggregators charge 25% to 35% commission, which puts hardworking street vendors out of business. <strong>StreetBites & Dine is 100% free of commission for street carts and food stalls</strong>.
+          </p>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="p-3 bg-white rounded-3 shadow-sm border-start border-warning border-4">
+                <h6 class="fw-bold mb-1"><i class="bi bi-wallet2 text-warning me-2"></i>0% Platform Cut</h6>
+                <p class="text-muted smaller mb-0">Keep 100% of your earnings. Direct UPI to your bank QR.</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 bg-white rounded-3 shadow-sm border-start border-primary border-4">
+                <h6 class="fw-bold mb-1"><i class="bi bi-ticket-perforated text-primary me-2"></i>Smart Token Queue</h6>
+                <p class="text-muted smaller mb-0">Customers get live token numbers. Zero fighting or crowding at cart.</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 bg-white rounded-3 shadow-sm border-start border-success border-4">
+                <h6 class="fw-bold mb-1"><i class="bi bi-shield-check text-success me-2"></i>FSSAI Hygiene Badge</h6>
+                <p class="text-muted smaller mb-0">Simple guidance to get certified & win customer trust.</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 bg-white rounded-3 shadow-sm border-start border-danger border-4">
+                <h6 class="fw-bold mb-1"><i class="bi bi-bank text-danger me-2"></i>PM SVANidhi Support</h6>
+                <p class="text-muted smaller mb-0">Easy access to â‚¹10k - â‚¹50k collateral-free government loans.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="bg-white p-4 rounded-4 shadow-lg border text-center">
+            <div class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-bold mb-2">
+              <i class="bi bi-check-all me-1"></i>Free Instant Setup
+            </div>
+            <h3 class="fw-bold">Are You a Street Vendor or Restaurant?</h3>
+            <p class="text-muted small mb-4">Register your food cart or dining spot in under 2 minutes. Start taking orders and tokens right away.</p>
+            <div class="d-flex justify-content-center gap-3">
+              <button class="btn btn-warning px-4 py-2 fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="#vendorPortalModal">
+                <i class="bi bi-plus-circle me-1"></i> Register My Stall / Restaurant
+              </button>
+              <a href="#schemes" class="btn btn-outline-secondary px-4 py-2 fw-bold rounded-pill">
+                <i class="bi bi-info-circle me-1"></i> Learn More
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Government Schemes & Vendor Support Hub -->
+  <section class="py-5" id="schemes">
+    <div class="container">
+      <div class="text-center max-w-700 mx-auto mb-5">
+        <span class="badge bg-primary-subtle text-primary px-3 py-1 rounded-pill fw-bold text-uppercase small">Empowerment Center</span>
+        <h2 class="fw-bold mt-2">Street Vendor Government Schemes & Guides</h2>
+        <p class="text-muted">Direct resources, interest-free micro-credit loans, and food hygiene certifications for street food entrepreneurs.</p>
+      </div>
+
+      <div class="row g-4" id="schemesContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Mandi Wholesale Ingredient Price Tracker -->
+  <section class="py-5 bg-light" id="mandi">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+          <span class="badge bg-success-subtle text-success px-3 py-1 rounded-pill fw-bold text-uppercase small">Wholesale Price Index</span>
+          <h2 class="fw-bold mt-1 mb-0">Daily Mandi Ingredient Benchmark Rates</h2>
+          <p class="text-muted small mb-0">Updated daily to help street vendors buy raw materials at fair wholesale prices.</p>
+        </div>
+        <div>
+          <span class="badge bg-dark text-light p-2 rounded-3"><i class="bi bi-clock-history me-1"></i> Live APMC & Wholesale Rates</span>
+        </div>
+      </div>
+
+      <div class="table-responsive bg-white rounded-4 shadow-sm border p-3">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Raw Ingredient</th>
+              <th>Wholesale Mandi Rate</th>
+              <th>Market Trend</th>
+              <th>Primary Source Mandi</th>
+            </tr>
+          </thead>
+          <tbody id="mandiRatesTable">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer py-5 bg-dark text-light">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-4">
+          <h4 class="fw-bold text-warning mb-2"><i class="bi bi-fire me-1"></i>StreetBites & Dine</h4>
+          <p class="text-muted small">
+            Dedicated to uplifting India's vibrant street food culture and pairing it with dining excellence. Designed with zero platform commission for street stalls and modern digital ordering for all.
+          </p>
+          <div class="d-flex gap-2">
+            <span class="badge bg-secondary">Made for Foodies & Vendors â¤ï¸</span>
+            <span class="badge bg-warning text-dark">Local First</span>
+          </div>
+        </div>
+        <div class="col-lg-2 col-6">
+          <h6 class="fw-bold text-light mb-3">For Customers</h6>
+          <ul class="list-unstyled text-muted small d-flex flex-column gap-2">
+            <li><a href="#explore" class="text-muted text-decoration-none hover-gold">Discover Street Food</a></li>
+            <li><a href="#" data-bs-toggle="modal" data-bs-target="#tokenTrackModal" class="text-muted text-decoration-none hover-gold">Track Live Token</a></li>
+            <li><a href="#explore" class="text-muted text-decoration-none hover-gold">Reserve Table</a></li>
+            <li><a href="#" class="text-muted text-decoration-none hover-gold">Offers & Coupons</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3 col-6">
+          <h6 class="fw-bold text-light mb-3">For Street Vendors & Restaurants</h6>
+          <ul class="list-unstyled text-muted small d-flex flex-column gap-2">
+            <li><a href="#" data-bs-toggle="modal" data-bs-target="#vendorPortalModal" class="text-muted text-decoration-none hover-gold">Register Stall in 2 Min</a></li>
+            <li><a href="#schemes" class="text-muted text-decoration-none hover-gold">PM SVANidhi Loan Guide</a></li>
+            <li><a href="#schemes" class="text-muted text-decoration-none hover-gold">FSSAI Hygiene Certification</a></li>
+            <li><a href="#mandi" class="text-muted text-decoration-none hover-gold">Daily Mandi Price Index</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="fw-bold text-light mb-3">Community Contact</h6>
+          <p class="text-muted small mb-1"><i class="bi bi-geo-alt me-2"></i>Delhi NCR â€¢ Mumbai â€¢ Bangalore</p>
+          <p class="text-muted small mb-1"><i class="bi bi-envelope me-2"></i>support@streetbites.org</p>
+          <p class="text-muted small"><i class="bi bi-whatsapp me-2"></i>Vendor Helpline: +91 99999 00000</p>
+        </div>
+      </div>
+      <hr class="border-secondary my-4" />
+      <div class="d-flex justify-content-between align-items-center flex-wrap small text-muted">
+        <span>Â© 2026 StreetBites & Dine. All rights reserved. Zero platform fees for carts.</span>
+        <span>Empowering Local Street Food Culture</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================================ -->
+  <!-- MODALS -->
+  <!-- ============================================================================ -->
+
+  <!-- 1. Vendor Details & Menu Modal -->
+  <div class="modal fade" id="vendorMenuModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header border-0 pb-0 position-relative">
+          <div class="w-100" id="vendorModalHeader">
+            <!-- Injected via JS -->
+          </div>
+          <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" id="vendorModalBody">
+          <!-- Injected via JS -->
+        </div>
+        <div class="modal-footer border-0 bg-light rounded-bottom-4 d-flex justify-content-between align-items-center">
+          <div class="small text-muted" id="vendorModalFooterText">
+            <i class="bi bi-lightning-charge text-warning me-1"></i>Orders get instant Digital Tokens
+          </div>
+          <button class="btn btn-warning px-4 py-2 rounded-pill fw-bold" data-bs-toggle="modal" data-bs-target="#cartModal">
+            View Cart (<span class="modal-cart-count">0</span> items)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Live Token Tracking Modal -->
+  <div class="modal fade" id="tokenTrackModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header border-0 bg-dark text-white rounded-top-4">
+          <h5 class="modal-title fw-bold"><i class="bi bi-ticket-detailed me-2 text-warning"></i>Live Digital Token Status</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Enter Your Token Number</label>
+            <div class="input-group">
+              <input type="text" id="tokenQueryInput" class="form-control" placeholder="e.g. TK-19 or TK-42" value="TK-19">
+              <button class="btn btn-warning fw-bold px-3" onclick="queryTokenStatus()">Track Status</button>
+            </div>
+          </div>
+
+          <div id="tokenResultCard" class="p-3 bg-light rounded-3 border mt-3">
+            <div class="text-center py-2">
+              <div class="display-5 fw-bold text-warning" id="tokenDisplayNumber">TK-19</div>
+              <h6 class="fw-bold text-dark mt-1" id="tokenStallName">Gupta Ji Chaat & Pani Puri</h6>
+              <div class="badge bg-success-subtle text-success fs-6 px-3 py-1 rounded-pill mt-1" id="tokenStatusBadge">Ready for Pickup</div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="token-tracker-steps mt-4">
+              <div class="tracker-step completed" id="step1">
+                <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+                <div class="step-label">Token Issued</div>
+              </div>
+              <div class="tracker-step completed" id="step2">
+                <div class="step-circle"><i class="bi bi-fire"></i></div>
+                <div class="step-label">In Kadai / Prep</div>
+              </div>
+              <div class="tracker-step active" id="step3">
+                <div class="step-circle"><i class="bi bi-bell-fill"></i></div>
+                <div class="step-label">Ready at Counter</div>
+              </div>
+              <div class="tracker-step" id="step4">
+                <div class="step-circle"><i class="bi bi-hand-thumbs-up-fill"></i></div>
+                <div class="step-label">Collected</div>
+              </div>
+            </div>
+
+            <div class="mt-4 p-2 bg-white rounded border small d-flex justify-content-between align-items-center">
+              <span><strong>Now Serving at Stall:</strong> <span class="badge bg-dark" id="stallServingToken">#TK-18</span></span>
+              <span class="text-success fw-bold"><i class="bi bi-alarm me-1"></i>Collect from counter!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Cart & Instant Token Checkout Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header border-0 bg-light rounded-top-4">
+          <h5 class="modal-title fw-bold"><i class="bi bi-bag-check-fill me-2 text-warning"></i>Your Food Cart & Token</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="cartItemsList" class="cart-items-container mb-3">
+            <!-- Injected via JS -->
+          </div>
+
+          <!-- Coupon code input -->
+          <div class="input-group mb-3">
+            <input type="text" id="couponInput" class="form-control" placeholder="Promo code (STREETLOVE, FIRSTBITE)">
+            <button class="btn btn-outline-dark fw-bold" onclick="applyCoupon()">Apply</button>
+          </div>
+          <div id="couponMessage" class="small mb-3"></div>
+
+          <!-- Customer details -->
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Your Name</label>
+            <input type="text" id="customerName" class="form-control form-control-sm" placeholder="e.g. Rahul Sharma" value="Aarav Sharma">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Phone Number (for SMS token)</label>
+            <input type="text" id="customerPhone" class="form-control form-control-sm" placeholder="+91 98765 43210" value="+91 98765 43210">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Order Type</label>
+            <select id="orderType" class="form-select form-select-sm">
+              <option value="takeaway_token">ðŸŽ« Self-Pickup at Stall Counter (Live Token)</option>
+              <option value="dine_in">ðŸ½ï¸ Dine-in / Eat at Stall</option>
+              <option value="delivery">ðŸ›µ Delivery to Nearby Address</option>
+            </select>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Payment Method</label>
+            <div class="d-flex gap-2">
+              <div class="form-check border p-2 rounded w-50">
+                <input class="form-check-input ms-1" type="radio" name="paymentMethod" id="payUPI" value="UPI" checked>
+                <label class="form-check-label ms-2 small fw-bold" for="payUPI">
+                  <i class="bi bi-qr-code-scan me-1 text-primary"></i>Direct UPI QR
+                </label>
+              </div>
+              <div class="form-check border p-2 rounded w-50">
+                <input class="form-check-input ms-1" type="radio" name="paymentMethod" id="payCash" value="Cash at Counter">
+                <label class="form-check-label ms-2 small fw-bold" for="payCash">
+                  <i class="bi bi-cash-stack me-1 text-success"></i>Cash at Stall
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Summary -->
+          <div class="p-3 bg-light rounded-3 border small">
+            <div class="d-flex justify-content-between mb-1">
+              <span>Subtotal:</span>
+              <strong id="cartSubtotal">â‚¹0</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-1 text-success">
+              <span>Discount:</span>
+              <strong id="cartDiscount">-â‚¹0</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Platform Fee (0% for street carts):</span>
+              <span class="badge bg-success-subtle text-success">â‚¹0 FREE</span>
+            </div>
+            <hr class="my-2">
+            <div class="d-flex justify-content-between fs-6 fw-bold">
+              <span>Total Payable:</span>
+              <span class="text-warning-emphasis" id="cartTotal">â‚¹0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 p-3 bg-light rounded-bottom-4">
+          <button class="btn btn-warning w-100 py-2 rounded-pill fw-bold shadow-sm" onclick="placeOrderAndGenerateToken()">
+            <i class="bi bi-ticket-perforated-fill me-1"></i> Place Order & Generate Token
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Vendor Portal & Self-Service Registration Modal -->
+  <div class="modal fade" id="vendorPortalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header border-0 bg-dark text-white rounded-top-4">
+          <h5 class="modal-title fw-bold"><i class="bi bi-shop me-2 text-warning"></i>Vendor Management & Registration Hub</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <ul class="nav nav-tabs border-bottom mb-4" id="vendorHubTabs">
+            <li class="nav-item">
+              <button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#tabManageStall">
+                <i class="bi bi-toggles me-1"></i>Manage Live Stall
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#tabRegisterStall">
+                <i class="bi bi-plus-circle me-1"></i>Register New Stall / Restaurant
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#tabPrintQR">
+                <i class="bi bi-qr-code me-1"></i>Stall QR Code
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- TAB 1: Manage Live Stall -->
+            <div class="tab-pane fade show active" id="tabManageStall">
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">Select Your Stall / Restaurant</label>
+                  <select id="manageVendorSelect" class="form-select form-select-sm" onchange="loadVendorDashboard(this.value)">
+                    <!-- Populated via JS -->
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">Live Stall Availability</label>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-success fw-bold flex-fill" onclick="updateVendorLiveStatus(true)">ðŸŸ¢ OPEN</button>
+                    <button class="btn btn-sm btn-danger fw-bold flex-fill" onclick="updateVendorLiveStatus(false)">ðŸ”´ CLOSED / SOLD OUT</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Token Controls -->
+              <div class="p-3 bg-light rounded-3 border mb-3">
+                <h6 class="fw-bold mb-2"><i class="bi bi-ticket-detailed text-warning me-1"></i>Stall Token Counter (Real-time)</h6>
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                  <div>
+                    <span class="text-muted small">Current Serving Token:</span>
+                    <span class="display-6 fw-bold ms-2 text-warning" id="dashServingToken">#TK-18</span>
+                  </div>
+                  <button class="btn btn-warning fw-bold px-4 py-2 rounded-pill shadow-sm" onclick="advanceNextToken()">
+                    <i class="bi bi-chevron-double-right me-1"></i> Call Next Token (+1)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Rush Level Selector -->
+              <div class="p-3 bg-light rounded-3 border mb-3">
+                <h6 class="fw-bold mb-2"><i class="bi bi-speedometer2 text-danger me-1"></i>Current Rush Level</h6>
+                <div class="btn-group w-100" role="group">
+                  <button type="button" class="btn btn-outline-success btn-sm fw-bold" onclick="updateRushLevel('low')">ðŸŸ¢ Low (<5 min wait)</button>
+                  <button type="button" class="btn btn-outline-warning btn-sm fw-bold" onclick="updateRushLevel('medium')">ðŸŸ¡ Medium (10-15 min)</button>
+                  <button type="button" class="btn btn-outline-danger btn-sm fw-bold" onclick="updateRushLevel('high')">ðŸ”´ High Rush (20+ min)</button>
+                </div>
+              </div>
+
+              <!-- Add New Dish to Stall -->
+              <div class="p-3 bg-light rounded-3 border">
+                <h6 class="fw-bold mb-2"><i class="bi bi-plus-square text-primary me-1"></i>Quick Add Menu Item / Snack</h6>
+                <div class="row g-2">
+                  <div class="col-md-5">
+                    <input type="text" id="newDishName" class="form-control form-control-sm" placeholder="Dish name (e.g. Paneer Roll)">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="number" id="newDishPrice" class="form-control form-control-sm" placeholder="Price (â‚¹)">
+                  </div>
+                  <div class="col-md-4">
+                    <button class="btn btn-primary btn-sm w-100 fw-bold" onclick="addNewMenuItemToStall()">+ Add Item</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: Register New Stall -->
+            <div class="tab-pane fade" id="tabRegisterStall">
+              <form id="vendorRegForm" onsubmit="handleVendorRegistration(event)">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">Stall / Restaurant Name *</label>
+                    <input type="text" id="regName" class="form-control form-control-sm" placeholder="e.g. Banarasi Chaat Corner" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">Type *</label>
+                    <select id="regType" class="form-select form-select-sm" required>
+                      <option value="street_vendor">ðŸ›’ Street Vendor / Thela (0% Commission)</option>
+                      <option value="food_truck">ðŸšš Food Truck / Mobile Cart</option>
+                      <option value="cafe">â˜• Cafe / Kiosk</option>
+                      <option value="restaurant">ðŸ½ï¸ Dine-in Restaurant</option>
+                    </select>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="form-label small fw-bold">Landmark / Street Location *</label>
+                    <input type="text" id="regLandmark" class="form-control form-control-sm" placeholder="e.g. Opposite Metro Pillar 88, Near City Mall" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">Cuisine Category *</label>
+                    <input type="text" id="regCategory" class="form-control form-control-sm" placeholder="e.g. Chaat & Snacks, Rolls, Dosa, Momos" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">City *</label>
+                    <select id="regCity" class="form-select form-select-sm">
+                      <option value="Delhi NCR">Delhi NCR</option>
+                      <option value="Bangalore">Bangalore</option>
+                      <option value="Noida">Noida</option>
+                      <option value="Gurugram">Gurugram</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">Phone Number *</label>
+                    <input type="text" id="regPhone" class="form-control form-control-sm" placeholder="+91 98765 43210" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">UPI ID (For Direct Customer Pay) *</label>
+                    <input type="text" id="regUpi" class="form-control form-control-sm" placeholder="e.g. mycart@oksbi" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">Signature Dish Name</label>
+                    <input type="text" id="regInitialDish" class="form-control form-control-sm" placeholder="e.g. Special Dahi Puri">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold">Price (â‚¹)</label>
+                    <input type="number" id="regInitialPrice" class="form-control form-control-sm" placeholder="50">
+                  </div>
+                  <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-warning w-100 py-2 fw-bold rounded-pill shadow-sm">
+                      <i class="bi bi-check-circle-fill me-1"></i> Register Stall & Go Live Free
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- TAB 3: Printable QR Code -->
+            <div class="tab-pane fade" id="tabPrintQR">
+              <div class="text-center p-4 bg-light rounded-3 border">
+                <h5 class="fw-bold mb-1" id="qrStallTitle">Gupta Ji Chaat & Pani Puri</h5>
+                <p class="text-muted small mb-3">Place this QR code on your cart/table. Customers scan, view your live menu, and get tokens without crowding!</p>
+                <div class="d-inline-block p-3 bg-white border rounded-3 shadow-sm mb-3">
+                  <!-- Generated QR Visual -->
+                  <div class="qr-sample-box p-3 bg-dark text-white rounded">
+                    <i class="bi bi-qr-code display-1"></i>
+                    <div class="small fw-bold mt-1 text-warning">SCAN TO ORDER & GET TOKEN</div>
+                  </div>
+                </div>
+                <div>
+                  <button class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold" onclick="alert('Print dialog initiated! Stick this QR flyer on your food cart.')">
+                    <i class="bi bi-printer me-1"></i> Print Cart Flyer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Reservation Modal (For Restaurants) -->
+  <div class="modal fade" id="reservationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header border-0 bg-dark text-white rounded-top-4">
+          <h5 class="modal-title fw-bold"><i class="bi bi-calendar2-check me-2 text-warning"></i>Reserve a Table</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Restaurant</label>
+            <input type="text" id="resVendorName" class="form-control form-control-sm" readonly>
+            <input type="hidden" id="resVendorId">
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label small fw-bold">Date</label>
+              <input type="date" id="resDate" class="form-control form-control-sm">
+            </div>
+            <div class="col-6">
+              <label class="form-label small fw-bold">Time</label>
+              <select id="resTime" class="form-select form-select-sm">
+                <option value="12:30 PM">12:30 PM</option>
+                <option value="1:30 PM">1:30 PM</option>
+                <option value="7:30 PM" selected>7:30 PM</option>
+                <option value="8:30 PM">8:30 PM</option>
+                <option value="9:30 PM">9:30 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label small fw-bold">Guests</label>
+              <input type="number" id="resGuests" class="form-control form-control-sm" min="1" max="20" value="2">
+            </div>
+            <div class="col-6">
+              <label class="form-label small fw-bold">Seating</label>
+              <select id="resSeating" class="form-select form-select-sm">
+                <option value="Main Dining">Main Dining</option>
+                <option value="Rooftop / Outdoor">Rooftop / Outdoor</option>
+                <option value="Private Booth">Private Booth</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Your Name</label>
+            <input type="text" id="resName" class="form-control form-control-sm" value="Aarav Sharma">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Phone Number</label>
+            <input type="text" id="resPhone" class="form-control form-control-sm" value="+91 98765 43210">
+          </div>
+          <button class="btn btn-warning w-100 py-2 rounded-pill fw-bold" onclick="submitReservation()">
+            Confirm Table Reservation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="static/js/main.js"></script>
+</body>
+</html>
+
